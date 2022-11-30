@@ -12,13 +12,13 @@ export const loginHandler=async(req:Request,res:Response)=>{
         });
         if (!user) {
             return res.status(400).json({
-            message: 'Worng username and password'
+            message: 'Worng username or password'
         });
         };
         const isVaildPassword = await argon2.verify(user.password,password)
         if (!isVaildPassword) {
-            return res.status(200).json({
-                message: 'Welcome back'
+            return res.status(400).json({
+                message: 'Worng username or password'
             });
         };
         return res.status(200).json({
