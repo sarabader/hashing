@@ -53,4 +53,19 @@ export const registerHandler = async (req:Request, res:Response) => {
         message: prismaError.message,
         });
 }
+
+
 };
+
+export const getAllUsersHandler = async (req: Request, res: Response) => {
+    try {
+      const users = await prisma.user.findMany();
+      return res.status(200).json(users);
+    } catch (error) {
+      console.log(error);
+      const prismaError = error as PrismaClientKnownRequestError;
+      return res.status(400).json({
+        message: prismaError.message,
+      });
+    }
+  };
