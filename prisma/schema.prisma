@@ -20,3 +20,31 @@ enum Role{
   ADMIN
   USER
 }
+
+
+model Student {
+  id String @id @default(uuid())
+  name String 
+  age Int
+  major String
+  classroom ClassRoom[]
+}
+
+model Teacher {
+  id String @id @default(uuid())
+  name String
+  classroom ClassRoom[]
+}
+
+model ClassRoom {
+  id String @id @default(uuid())
+  name String 
+  student_id String
+  teacher_id String
+
+  studentID Student @relation(fields:[student_id],references: [id])
+  teacherID Teacher @relation(fields:[teacher_id],references: [id])
+
+  @@index([student_id])
+  @@index([teacher_id])
+}
