@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { prisma } from "../config/db";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as argon2 from 'argon2'
+import * as jwt from 'jsonwebtoken'
 
 
 export const loginHandler=async(req:Request,res:Response)=>{
@@ -21,8 +22,14 @@ export const loginHandler=async(req:Request,res:Response)=>{
                 message: 'Worng username or password'
             });
         };
+
+        const token = jwt.sign({id:user.id, role:user.role },
+            process.env.JWT_SECRET as string
+            );
+
         return res.status(200).json({
-            message: 'Welcome back'
+            message: 'Welcome back',
+            token,
         });
         };
 
